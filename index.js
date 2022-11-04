@@ -62,71 +62,59 @@ const minimizeWindow = () =>
 
 const displayWidth = 3840;
 const displayHeight = 1600;
-const statusBarTop = 26;
-const applicationBarBottom = 32;
+const statusBarTop = 32;
+const applicationBarBottom = 42;
 
 const splitWindow = (xFrom, xTo, xParts, yFrom, yTo, yParts) => {
-  const w = (displayWidth / xParts) * (xTo - xFrom + 1);
+  const w = (displayWidth / xParts) * (xTo - xFrom + 1) - 10;
   const h =
     ((displayHeight - statusBarTop - applicationBarBottom) / yParts) *
-    (yTo - yFrom + 1);
-  const x = (displayWidth / xParts) * xFrom;
+    (yTo - yFrom + 1) - 10;
+  const x = (displayWidth / xParts) * xFrom + 10;
   const y =
     ((displayHeight - statusBarTop - applicationBarBottom) / yParts) * yFrom +
-    statusBarTop;
-  // console.log(`w=${w} h=${h}  x=${x}  y=${y}`);
+    statusBarTop + 10;
+  console.log(`w=${w} h=${h}  x=${x}  y=${y}`);
   resizeAndMoveWindow(w, h, x, y);
 };
 
 myStreamDeck.on("down", (keyIndex) => {
   console.log("key %d down", keyIndex);
 
-  if (keyIndex === 0) {
-    decreaseBrightness();
-  } else if (keyIndex === 1) {
-    increaseBrightness();
-  } else if (keyIndex === 2) {
-    logAndRunExec("xdotool key XF86AudioPrev");
-  } else if (keyIndex === 3) {
-    logAndRunExec("xdotool key XF86AudioPlay");
-  } else if (keyIndex === 4) {
-    logAndRunExec("xdotool key XF86AudioNext");
-  } else if (keyIndex === 5) {
-    logAndRunExec("xdotool key XF86AudioMute");
-  } else if (keyIndex === 6) {
-    logAndRunExec("xdotool key XF86AudioLowerVolume");
-  } else if (keyIndex === 7) {
-    logAndRunExec("xdotool key XF86AudioRaiseVolume");
-  } else if (keyIndex === 17) {
-    resizeAndMoveWindow(1280, 1024, 1100, 460);
-  } else if (keyIndex === 18) {
-    resizeAndMoveWindow(1920, 1080, 960, 300);
-  } else if (keyIndex === 26) {
-    minimizeWindow();
-  } else if (keyIndex === 24) {
-    toggleWorking();
-  } else if (keyIndex === 12) {
-    splitWindow(0, 0, 3, 0, 0, 2);
-  } else if (keyIndex === 13) {
-    splitWindow(1, 1, 3, 0, 0, 2);
-  } else if (keyIndex === 14) {
-    splitWindow(2, 2, 3, 0, 0, 2);
-  } else if (keyIndex === 19) {
-    splitWindow(0, 0, 2, 0, 1, 2);
-  } else if (keyIndex === 20) {
-    splitWindow(0, 0, 3, 0, 1, 2);
-  } else if (keyIndex === 21) {
-    splitWindow(1, 1, 3, 0, 1, 2);
-  } else if (keyIndex === 22) {
-    splitWindow(2, 2, 3, 0, 1, 2);
-  } else if (keyIndex === 23) {
-    splitWindow(1, 1, 2, 0, 1, 2);
-  } else if (keyIndex === 28) {
-    splitWindow(0, 0, 3, 1, 1, 2);
-  } else if (keyIndex === 29) {
-    splitWindow(1, 1, 3, 1, 1, 2);
-  } else if (keyIndex === 30) {
-    splitWindow(2, 2, 3, 1, 1, 2);
+  switch (keyIndex) {
+    case 0: decreaseBrightness(); break;
+    case 1: increaseBrightness(); break;
+
+    case 2: logAndRunExec("xdotool key XF86AudioPrev"); break;
+    case 3: logAndRunExec("xdotool key XF86AudioPlay"); break;
+    case 4: logAndRunExec("xdotool key XF86AudioNext"); break;
+    case 5: logAndRunExec("xdotool key XF86AudioMute"); break;
+    case 6: logAndRunExec("xdotool key XF86AudioLowerVolume"); break;
+    case 7: logAndRunExec("xdotool key XF86AudioRaiseVolume"); break;
+
+    case 17: resizeAndMoveWindow(1280, 1024, 1100, 460); break;
+    case 18: resizeAndMoveWindow(1920, 1080, 960, 300); break;
+
+    case 24: toggleWorking(); break;
+    case 26: minimizeWindow(); break;
+
+    case 11: splitWindow(0, 0, 2, 0, 0, 2); break;
+    case 12: splitWindow(0, 0, 3, 0, 0, 2); break;
+    case 13: splitWindow(1, 1, 3, 0, 0, 2); break;
+    case 14: splitWindow(2, 2, 3, 0, 0, 2); break;
+    case 15: splitWindow(2, 2, 2, 0, 0, 2); break;
+
+    case 19: splitWindow(0, 0, 2, 0, 1, 2); break;
+    case 20: splitWindow(0, 0, 3, 0, 1, 2); break;
+    case 21: splitWindow(1, 1, 3, 0, 1, 2); break;
+    case 22: splitWindow(2, 2, 3, 0, 1, 2); break;
+    case 23: splitWindow(1, 1, 2, 0, 1, 2); break;
+
+    case 27: splitWindow(0, 0, 2, 1, 1, 2); break;
+    case 28: splitWindow(0, 0, 3, 1, 1, 2); break;
+    case 29: splitWindow(1, 1, 3, 1, 1, 2); break;
+    case 30: splitWindow(2, 2, 3, 1, 1, 2); break;
+    case 31: splitWindow(2, 2, 2, 1, 1, 2); break;
   }
 });
 
@@ -171,14 +159,20 @@ myStreamDeck.fillColor(26, 255, 0, 0); // minimize window
 
 myStreamDeck.fillColor(24, 255, 255, 0); // working
 
-myStreamDeck.fillColor(12, 255, 0, 0);
-myStreamDeck.fillColor(13, 255, 0, 0);
-myStreamDeck.fillColor(14, 255, 0, 0);
-myStreamDeck.fillColor(19, 255, 0, 0);
+myStreamDeck.fillColor(11, 0, 82, 33);
+myStreamDeck.fillColor(12, 107, 0, 0);
+myStreamDeck.fillColor(13, 107, 0, 0);
+myStreamDeck.fillColor(14, 107, 0, 0);
+myStreamDeck.fillColor(15, 0, 82, 33);
+
+myStreamDeck.fillColor(19, 65, 169, 76);
 myStreamDeck.fillColor(20, 255, 0, 0);
 myStreamDeck.fillColor(21, 255, 0, 0);
 myStreamDeck.fillColor(22, 255, 0, 0);
-myStreamDeck.fillColor(23, 255, 0, 0);
-myStreamDeck.fillColor(28, 255, 0, 0);
-myStreamDeck.fillColor(29, 255, 0, 0);
-myStreamDeck.fillColor(30, 255, 0, 0);
+myStreamDeck.fillColor(23, 65, 169, 76);
+
+myStreamDeck.fillColor(27, 0, 82, 33);
+myStreamDeck.fillColor(28, 107, 0, 0);
+myStreamDeck.fillColor(29, 107, 0, 0);
+myStreamDeck.fillColor(30, 107, 0, 0);
+myStreamDeck.fillColor(31, 0, 82, 33);
